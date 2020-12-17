@@ -71,9 +71,22 @@ app.get('/doctor',(req,res)=>{
     res.render('Personal_Medico');
 });
 
+app.post('/registro1',(req,res)=>{
+    console.log('prueba');
+    res.render('Registro_2');
+});
+
 app.get('/registro1',(req,res)=>{
     console.log('prueba');
     res.render('Registro_1');
+});
+app.get('/registro2',(req,res)=>{
+    console.log('get registro 2');
+    res.render('Registro_2');
+});
+app.get('/registro3',(req,res)=>{
+    console.log('prueba');
+    res.render('Registro_3');
 });
 
 app.get('/sysadmin',(req,res)=>{
@@ -81,12 +94,12 @@ app.get('/sysadmin',(req,res)=>{
     res.render('Sysadmin');
 });
 
-app.get('/registro2',(req,res)=>{
-    console.log('prueba');
-    res.render('Registro_2');
+app.post('/registro2',(req,res)=>{
+    console.log('post registro 2');
+    res.render('Registro_3');
 });
 
-app.get('/registro3',(req,res)=>{
+app.post('/registro3',(req,res)=>{
     console.log('prueba');
     res.render('Registro_3');
 });
@@ -96,7 +109,15 @@ app.get('/registro_padmin',(req,res)=>{
     res.render('Registro_Personal_Administrativo');
 });
 
+app.get('/registro_doctor',(req,res)=>{
+    console.log('prueba');
+    res.render('Registro_Medicos');
+});
 
+app.get('/recetas',(req,res)=>{
+    console.log('prueba');
+    res.render('Generador_Recetas');
+});
 /////
  app.post('/new',urlencodedParser,(req,res) =>{
     const data =req.body;

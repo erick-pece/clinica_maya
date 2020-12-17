@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    
+    <link href="packages/core/main.css" rel="stylesheet"/>
+    <link href="packages/daygrid/main.css" rel="stylesheet"/>
+    <link href="packages/timegrid/main.css" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="js/jquery-3.4.1.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!--Full Calendar-->
+    <script src='packages/core/main.js'></script>
+    <script src="packages/daygrid/main.js"></script>
+    <script src="packages/core/locales/es.js"></script>
+    <script src="packages/interaction/main.js"></script>
+    <script src="packages/timegrid/main.js"></script>
+    
+    <!--Clock picker-->
+    <script src="js/jquery-clockpicker.js"></script>
+    <link rel="stylesheet" href="css/bootstrap-clockpicker.css">
+    
+
+            <script>
+
+          document.addEventListener('DOMContentLoaded', function() {
+             calendarEl = document.getElementById('calendar');
+      
+             calendar = new FullCalendar.Calendar(calendarEl, {
+              plugins: ['dayGrid', 'interaction','timeGrid' ],
+              locale: 'es',
+              dateClick: function(info) {
+
+                $('#btnAgregar').prop("disabled",false) ;
+                $('#btnModificar').prop("disabled",true) ;
+                $('#btnEliminar').prop("disabled",true) ;
+
+                limpiarFormulario();
+                $('#txtFecha').val(info.dateStr);
+                $("#ModalEventos").modal();
+              },
+              header:{
+                left:'today,prev,next',
+                center:'title',
+                right:'dayGridMonth,timeGridWeek,timeGridDay'
+              },               
+              events: 'http://localhost/CalendarioWeb/eventos.php',
+            eventClick: function(info) {
+
+              $('#btnAgregar').prop("disabled",true) ;
+              $('#btnModificar').prop("disabled",false) ;
+              $('#btnEliminar').prop("disabled",false) ;
+
+
+              //H2
+              $('#tituloEvento').html(info.event.title);
+
+              //Mostrar la informacion del evento en los inputs
+              $('#txtDescripcion').val(info.event.extendedProps.descripcion);
+              $('#txtID').val(info.event.id);
+              $('#txtTitulo').val(info.event.title);
+              $('#txtColor').val(info.event.backgroundColor);
+              
+
+              var dia = info.event.start.getDate();
+              var mes = info.event.start.getMonth() + 1;
+              var año = info.event.start.getFullYear();
+              var hora = info.event.start.getHours();
+              var minuto = info.event.start.getMinutes();
+              var segundos = info.event.start.getSeconds();
+
+              var fecha = año + "-" + mes + "-" + dia;
+              var tiempo = hora + ":" + minuto + ":" + segundos;  
+              
+              
+                    
+              //console.log(tiempo);          
+             // console.log(typeof info.event.start);
+              $('#txtFecha').val(fecha);
+              $('#txtHora').val(tiempo);
+              $("#ModalEventos").modal();
+
+            },
+            editable:true,
+            eventLimit: true,
+            eventDrop: function(info){
+              $('#txtID').val(info.event.id);
+              $('#txtTitulo').val(info.event.title);
+              $('#txtColor').val(info.event.backgroundColor);
+              $('#txtDescripcion').val(info.event.extendedProps.descripcion);
+
+              /*
+              var fechaHora = info.event.start.toISOString().split("T");
+              $('#txtFecha').val(fechaHora[0]);
+              $('#txtHora').val(fechaHora[1]);
+              */
+              var dia = info.event.start.getDate();
+              var mes = info.event.start.getMonth() + 1;
+              var año = info.event.start.getFullYear();
+              var hora = info.event.start.getHours();
+              var minuto = info.event.start.getMinutes();
+              var segundos = info.event.start.getSeconds();
+
+              var fecha = año + "-" + mes + "-" + dia;
+              var tiempo = hora + ":" + minuto + ":" + segundos;  
+              
+              $('#txtFecha').val(fecha);
+              $('#txtHora').val(tiempo);
+
+              RecolectarDatosGUI();
+              EnviarInformacion('modificar',NuevoEvento,true);
+            }
+            
+              
+
+            });
+      
+            calendar.render();
+          });
+
+
+      
+        </script>
+
+    <title>Calendario Web</title>
+
+
+    <style>
+
+      body {
+        margin: 40px 10px;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+    
+      #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+    
+    </style>
+</head>
+
+<body>
+
+  <div id='calendar'></div>
+
+
+          <!-- Modal(Agregar, Modificar y Eliminar) -->
+<div class="modal fade" id="ModalEventos" tabindex="-1" role="dialog" aria-labelledby="ModalEventos" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloEvento"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         
+        <input type="hidden" id="txtID" name="txtID">
+        <input type="hidden" id="txtFecha" name="txtFecha"/>
+
+      <div class="form-row">
+        <div class="form-group col-md-8">
+          <label>Título:</label>
+          <input type="text" id="txtTitulo" class="form-control" placeholder="Título del Evento"/>
+        </div>
+          <div class="form-group col-md-4">
+                <label>Hora de la cita:</label>
+                
+                <div class="input-group clockpicker" data-autoclose="true">
+
+                    <input type="text" id="txtHora" value="10:30" class="form-control" />
+
+                </div>
+                
+          </div>
+      </div>
+        <div class="form-group">
+          <label>Descripción:</label>
+          <textarea id="txtDescripcion" rows="3"  class="form-control"></textarea>
+        </div>
+          <div class="form-group">
+              <label>Color:</label>
+              <input type="color" value="#ff0000" id="txtColor" class="form-control" style="height: 36px">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnAgregar" class="btn btn-success">Agregar</button>
+        <button type="button" id="btnModificar" class="btn btn-success">Modificar</button>
+        <button type="button" id="btnEliminar" class="btn btn-danger">borrar</button> 
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+var NuevoEvento;
+
+$('#btnAgregar').click(function(){
+RecolectarDatosGUI();
+EnviarInformacion('agregar',NuevoEvento);
+/*
+calendar.addEvent({
+  id: NuevoEvento.id,
+  title: NuevoEvento.title,
+  start: NuevoEvento.start,
+  color: NuevoEvento.color,
+  descripcion: NuevoEvento.descripcion ,
+  textcolor: NuevoEvento.textcolor,
+  end: NuevoEvento.end
+  
+    });
+*/
+    //$("#ModalEventos").modal('toggle');
+  });
+
+
+$('#btnEliminar').click(function(){
+RecolectarDatosGUI();
+EnviarInformacion('eliminar',NuevoEvento);
+});
+
+$('#btnModificar').click(function(){
+RecolectarDatosGUI();
+EnviarInformacion('modificar',NuevoEvento);
+});
+
+function RecolectarDatosGUI(){
+    NuevoEvento = {
+      id:$('#txtID').val(),
+      title:$('#txtTitulo').val(),
+      start:$('#txtFecha').val() + " "+ $('#txtHora').val(),
+      color: $('#txtColor').val(),
+      descripcion: $('#txtDescripcion').val(),
+      textColor: "#FFFFFF",
+      end:$('#txtFecha').val() + " "+ $('#txtHora').val()
+    }
+};
+
+function EnviarInformacion(accion,objEvento,modal){
+          $.ajax({
+            type: 'POST',
+            url:'eventos.php?accion='+accion,
+            data:objEvento,
+            success:function(msg){
+              if(msg){
+                calendar.refetchEvents();
+                if(!modal){
+                  $("#ModalEventos").modal('toggle'); 
+                }  
+   
+
+              }
+            },
+            error:function(jqxhr, status, exception){
+              alert('Exception: ',exception)
+            }
+          });
+}
+
+$('.clockpicker').clockpicker();
+
+function limpiarFormulario(){
+              $('#txtID').val('');
+              $('#txtTitulo').val('Cita, tratamiento, revision… ');
+              $('#txtColor').val('');
+              $('#txtDescripcion').val('');
+              $('#tituloEvento').html('');
+   
+}
+
+</script>
+
+
+
+
+
+  
+</body>
+
+
+</html>
+
+

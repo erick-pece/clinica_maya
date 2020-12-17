@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
     host: 'localhost',
     user: 'root',
     password: 'zimbarawr1466',
-    database: 'clinica',
+    database: 'clinica_maya',
     port: 3306
  });
 

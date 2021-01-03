@@ -242,62 +242,64 @@ body.custom-background { background-color: #ffffff; }
 
 			
 			<!--<form action="http://www.mexicad.com/doctores/#b1684b643f6dfb31b6d060515730b184e91c32a4" method="post">  -->
-			<form action="/registro2" method="post">	
-<label for="nombre-apellidos" class="coblocks-label">Nombre                      /               Apellidos  <span class="required">*</span></label>
-		<input type="hidden" name="field-nombre-apellidos[label]" value="Nombre                      /               Apellidos ">
+			<form action="/registro11" method="post">	
+				<label for="nombre-apellidos" class="coblocks-label">Nombre                      /               Apellidos  <span class="required">*</span></label>
+		
 
-				<input type="hidden" id="name-field-id" name="name-field-id" class="coblocks-name-field-id" value="field-nombre-apellidos">
+				
 		
 			<div class="coblocks-form__inline-fields">
 				<div class="coblocks-form__inline-field">
-					<input type="text" id="nombre-apellidos-firstname" name="field-nombre-apellidos[value][first-name]" class="coblocks-field coblocks-field--name first" required="">
+					<!-- <input type="text" id="nombre-apellidos-firstname" name="field-nombre-apellidos[value][first-name]" class="coblocks-field coblocks-field--name first" required=""> -->
+					<input type="text" id="nombre-apellidos-firstname" name="nombre" class="coblocks-field coblocks-field--name first" required="">
 					<small class="coblocks-form__subtext">Nombre</small>
 				</div>
 
 				<div class="coblocks-form__inline-field">
-					<input type="text" id="nombre-apellidos-lastname" name="field-nombre-apellidos[value][last-name]" class="coblocks-field coblocks-field--name last" required="">
+					<input type="text" id="nombre-apellidos-lastname" name="apellido" class="coblocks-field coblocks-field--name last" required="">
 					<small class="coblocks-form__subtext">Apellidos</small>
 				</div>
+				
 			</div>
 
 			
 
 <label for="fecha-de-nacimiento" class="coblocks-label">Fecha de Nacimiento <span class="required">*</span></label>
-		<input type="hidden" name="field-fecha-de-nacimiento[label]" value="Fecha de Nacimiento">
+	
 
 		
-		<input type="text" id="fecha-de-nacimiento" name="field-fecha-de-nacimiento[value]" class="coblocks-field coblocks-field--date hasDatepicker" required="">
+		<input type="text" id="fecha-de-nacimiento" name="fecha_nacimiento" class="coblocks-field coblocks-field--date hasDatepicker" required="">
 
 		
 
 <label for="direccion" class="coblocks-label">Dirección</label>
-		<input type="hidden" name="field-direccion[label]" value="Dirección">
+
 
 		
-		<textarea name="field-direccion[value]" id="direccion" class="coblocks-field coblocks-textarea" rows="20"></textarea>
+		<textarea name="direccion" id="direccion" class="coblocks-field coblocks-textarea" rows="20"></textarea>
 
 		
 
 <label for="telefono" class="coblocks-label">Telefono <span class="required">*</span></label>
-		<input type="hidden" name="field-telefono[label]" value="Telefono">
+		
 
 		
-		<input type="tel" id="telefono" name="field-telefono[value]" class="coblocks-field coblocks-field--telephone" required="">
+		<input type="tel" id="telefono" name="telefono" class="coblocks-field coblocks-field--telephone" required="">
 
 		
 
 
 		<div class="coblocks-form__submit wp-block-button">
-			<button type="submit" class="wp-block-button__link" style="">Cancelar</button>
-			<input type="hidden" id="form-submit" name="form-submit" value="9a6227dacd"><input type="hidden" name="_wp_http_referer" value="/doctores/">			<input type="hidden" name="action" value="coblocks-form-submit">
+			<button type="submit" class="wp-block-button__link" >Cancelar</button>
+			
 
 					</div>
 
 		
-				<input class="coblocks-field verify" type="email" name="coblocks-verify-email" autocomplete="off" placeholder="Correo electrónico" tabindex="-1">
-				<input type="hidden" name="form-hash" value="b1684b643f6dfb31b6d060515730b184e91c32a4">
+				<input class="coblocks-field verify" type="email"  autocomplete="off" placeholder="Correo electrónico" tabindex="-1">
+				
 
-							</form>
+							<!-- </form> -->
 
 		</div>
 
@@ -314,29 +316,29 @@ body.custom-background { background-color: #ffffff; }
 
 			
 			<!-- <form action="http://www.mexicad.com/doctores/#7b63cc63bcd54590b294aefc459fdc2fc4524649" method="post"> -->
-			<form action="/registro1" method="post">	
+			<!-- <form action="/registro2" method="post">	 -->
 <div class="coblocks-field"><label for="sexo" class="coblocks-label"><br>Sexo <span class="required">*</span></label>
-		<input type="hidden" name="field-sexo[label]" value="&lt;br&gt;Sexo">
+		
 
-		<div class="coblocks--inline"><input id="sexo-femenino" type="radio" name="field-sexo[value]" value="Femenino" class="radio">
-				<label class="coblocks-radio-label" for="sexo-femenino">Femenino</label><input id="sexo-masculino" type="radio" name="field-sexo[value]" value="Masculino" class="radio">
-				<label class="coblocks-radio-label" for="sexo-masculino">Masculino</label><input id="sexo-sin-especificar" type="radio" name="field-sexo[value]" value="Sin especificar" class="radio">
+		<div class="coblocks--inline"><input id="sexo-femenino" type="radio" name="sexo" value="Femenino" class="radio">
+				<label class="coblocks-radio-label" for="sexo-femenino">Femenino</label><input id="sexo-masculino" type="radio" name="sexo" value="Masculino" class="radio">
+				<label class="coblocks-radio-label" for="sexo-masculino">Masculino</label><input id="sexo-sin-especificar" type="radio" name="sexo" value="Sin especificar" class="radio">
 				<label class="coblocks-radio-label" for="sexo-sin-especificar">Sin especificar</label></div></div>
 
 <div class="coblocks-field"><label for="estado-civil-2" class="coblocks-label">estado civil</label>
-		<input type="hidden" name="field-estado-civil-2[label]" value="estado civil">
+		
 
-		<input id="estado-civil-2-soltero" type="radio" name="field-estado-civil-2[value]" value="Soltero" class="radio">
-				<label class="coblocks-radio-label" for="estado-civil-2-soltero">Soltero</label><input id="estado-civil-2-casado" type="radio" name="field-estado-civil-2[value]" value="Casado" class="radio">
-				<label class="coblocks-radio-label" for="estado-civil-2-casado">Casado</label><input id="estado-civil-2-viudo" type="radio" name="field-estado-civil-2[value]" value="Viudo" class="radio">
+		<input id="estado-civil-2-soltero" type="radio" name="estado_civil" value="Soltero" class="radio">
+				<label class="coblocks-radio-label" for="estado-civil-2-soltero">Soltero</label><input id="estado-civil-2-casado" type="radio" name="estado_civil" value="Casado" class="radio">
+				<label class="coblocks-radio-label" for="estado-civil-2-casado">Casado</label><input id="estado-civil-2-viudo" type="radio" name="estado_civil" value="Viudo" class="radio">
 				<label class="coblocks-radio-label" for="estado-civil-2-viudo">Viudo</label></div>
 
 <label for="correo-electronico" class="coblocks-label">Correo electrónico <span class="required">*</span></label>
-		<input type="hidden" name="field-correo-electronico[label]" value="Correo electrónico">
+		
 
 		
-		<input type="hidden" id="email-field-id" name="email-field-id" class="coblocks-email-field-id" value="field-correo-electronico">
-		<input type="email" id="correo-electronico" name="field-correo-electronico[value]" class="coblocks-field coblocks-field--email" required="">
+		
+		<input type="email" id="correo-electronico" name="email" class="coblocks-field coblocks-field--email" required="">
 
 		
 
@@ -358,14 +360,15 @@ body.custom-background { background-color: #ffffff; }
 
 
 		<div class="coblocks-form__submit wp-block-button">
-			<button type="submit" class="wp-block-button__link" style="">Siguiente</button>
-			<input type="hidden" id="form-submit" name="form-submit" value="9a6227dacd"><input type="hidden" name="_wp_http_referer" value="/doctores/">			<input type="hidden" name="action" value="coblocks-form-submit">
+			 <button type="submit" class="wp-block-button__link" >Siguiente</button> 
+		
+			
 
 					</div>
 
 		
-				<input class="coblocks-field verify" type="email" name="coblocks-verify-email" autocomplete="off" placeholder="Correo electrónico" tabindex="-1">
-				<input type="hidden" name="form-hash" value="7b63cc63bcd54590b294aefc459fdc2fc4524649">
+				<input class="coblocks-field verify" type="email"  autocomplete="off" placeholder="Correo electrónico" tabindex="-1">
+				
 
 							</form>
 

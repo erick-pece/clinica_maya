@@ -20,11 +20,13 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.set('view engine', 'ejs');
 //app.set('port', process.env.port || 3000);
 var port = process.env.PORT || 3000;
+const posts = {};
 
  var mysqlConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'zimbarawr1466',
+    //password: 'zimbarawr1466',
+    password: 'admin',
     database: 'clinica_maya',
     port: 3306
  });
@@ -42,6 +44,7 @@ var port = process.env.PORT || 3000;
 
 
 
+
 app.get('/dat',(req,res) =>{
     mysqlConnection.query('SELECT * FROM pacientte',(err,rows, fields)=>{
         if(!err){
@@ -54,11 +57,12 @@ app.get('/dat',(req,res) =>{
     res.redirect('index.html');
 });
 
-//  app.get('/',(req,res)=>{
-//      console.log('prueba');
-//      res.render('index');
+  app.get('/',(req,res)=>{
+      console.log('ejecutando la raiz');
+      //res.render('index');
+      res.render('inicio');
 
-//  });
+  });
 //login
 app.get('/login',(req,res)=>{
     console.log('login');

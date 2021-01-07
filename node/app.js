@@ -20,11 +20,13 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.set('view engine', 'ejs');
 //app.set('port', process.env.port || 3000);
 var port = process.env.PORT || 3000;
+const posts = {};
 
  var mysqlConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'zimbarawr1466',
+    //password: 'zimbarawr1466',
+    password: 'admin',
     database: 'clinica_maya',
     port: 3306
  });
@@ -43,6 +45,7 @@ var port = process.env.PORT || 3000;
 
 
 
+<<<<<<< HEAD
 ////////////////login///////////////////////////////////
 app.get('/login',(req,res)=>{
     console.log('login');
@@ -55,6 +58,10 @@ app.post('/login',urlencodedParser,(req,res)=>{
    datos=req.body
    console.log(datos.usuario,datos.contraseña);
     mysqlConnection.query('SELECT * FROM persona WHERE email= ? AND contraseña=?',[datos.usuario,datos.contraseña],(err,rows)=>{  
+=======
+app.get('/dat',(req,res) =>{
+    mysqlConnection.query('SELECT * FROM pacientte',(err,rows, fields)=>{
+>>>>>>> 367a74772454fdae0b920b3367f5b84fd1c57a77
         if(!err){
             console.log("mysql rows")
             console.log(rows); 
@@ -96,10 +103,24 @@ app.post('/login',urlencodedParser,(req,res)=>{
 
 });
 
+<<<<<<< HEAD
 
 
 //////////////////////////////////////////////
 
+=======
+  app.get('/',(req,res)=>{
+      console.log('ejecutando la raiz');
+      //res.render('index');
+      res.render('inicio');
+
+  });
+//login
+app.get('/login',(req,res)=>{
+    console.log('login');
+    res.render('Acceder');
+});
+>>>>>>> 367a74772454fdae0b920b3367f5b84fd1c57a77
 
 //ruta inicio
 app.get('/inicio',(req,res)=>{

@@ -329,8 +329,10 @@ body.custom-background { background-color: #ffffff; }
 <div class="coblocks-field"><label for="turno-2" class="coblocks-label">turno <span class="required">*</span></label>
 		<!-- <input type="hidden" name="field-turno-2[label]" value="turno"> -->
 
-		<input id="turno-2-matutino" type="radio" name="turno" value="Matutino" class="radio">
-				<label class="coblocks-radio-label" for="turno-2-matutino">Matutino</label><input id="turno-2-vespertino" type="radio" name="turno" value="Vespertino" class="radio">
+		<input id="turno-2-matutino" type="radio" name="turno" value=1 class="radio">
+				<label class="coblocks-radio-label" for="turno-2-matutino">Matutino</label>
+
+				<input id="turno-2-vespertino" type="radio" name="turno" value=2 class="radio">
 				<label class="coblocks-radio-label" for="turno-2-vespertino">Vespertino</label></div>
 
 <label for="contrasena-5" class="coblocks-label">Contraseña <span class="required">*</span></label>
@@ -361,7 +363,7 @@ body.custom-background { background-color: #ffffff; }
 
 
 <div class="wp-block-buttons">
-<div class="wp-block-button"><a class="wp-block-button__link">cancelar</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link" href="javascript:history.back()">cancelar</a></div>
 </div>
 
 

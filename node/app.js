@@ -42,28 +42,64 @@ var port = process.env.PORT || 3000;
 
 
 
-app.get('/dat',(req,res) =>{
-    mysqlConnection.query('SELECT * FROM pacientte',(err,rows, fields)=>{
-        if(!err){
-        console.log(rows);
-        
-        }
-        else
-        console.log(err);
-    })
-    res.redirect('index.html');
-});
 
-//  app.get('/',(req,res)=>{
-//      console.log('prueba');
-//      res.render('index');
-
-//  });
-//login
+////////////////login///////////////////////////////////
 app.get('/login',(req,res)=>{
     console.log('login');
     res.render('Acceder');
 });
+
+
+
+app.post('/login',urlencodedParser,(req,res)=>{
+   datos=req.body
+   console.log(datos.usuario,datos.contraseña);
+    mysqlConnection.query('SELECT * FROM persona WHERE email= ? AND contraseña=?',[datos.usuario,datos.contraseña],(err,rows)=>{  
+        if(!err){
+            console.log("mysql rows")
+            console.log(rows); 
+            if(rows[0].TipoUsuario=='paciente'){
+                    res.render('paciente',{
+                        datos:rows[0]
+                    });
+                    console.log("paciente")
+                }
+            else if(rows[0].TipoUsuario=='doctor'){
+                    res.render('Personal_Medico',{
+                        datos:rows[0]
+                    });
+                    console.log("doctor")
+                }
+            else if(rows[0].TipoUsuario=="SysAdmin"){
+                    res.render('Sysadmin',{
+                        datos:rows[0]
+                    });
+                    console.log("Sys")
+                }
+            else if(rows[0].TipoUsuario=="Administrativo"){
+                    res.render('Bienvenido_Adm',{
+                        datos:rows[0]
+                    });
+                    console.log("Adm")
+                }
+             else{
+                    res.render('Acceder',{
+                        datos:datos
+                    });
+                    console.log("otro")
+                }    
+
+        }
+        else
+        console.log(err);
+    })
+
+});
+
+
+
+//////////////////////////////////////////////
+
 
 //ruta inicio
 app.get('/inicio',(req,res)=>{
@@ -71,6 +107,25 @@ app.get('/inicio',(req,res)=>{
     res.render('Inicio');
 });
 
+/////////////agendar cita///////
+
+app.get('/cita',(req,res)=>{
+    console.log('Agendar cita');
+    res.render('Cita');
+});
+
+app.post('/cita',urlencodedParser,(req,res)=>{
+data =req.body;
+console.log(data)
+//mysqlConnection.query('INSERT INTO prueba set ?',data,(err,rows)=>{  
+    // if(!err){
+    // console.log(rows);
+    
+    // }
+    // else
+    // console.log(err);
+    // })
+})
 //rutas pantallas de usuarios
  app.get('/admin',(req,res)=>{
     console.log('admin');
@@ -92,38 +147,44 @@ app.get('/sysadmin',(req,res)=>{
 });
 
 
-//rutas de registro de pacientes
+//////////rutas de registro de pacientes
     //get
         app.get('/registro1',(req,res)=>{
             console.log('registro1');
-            res.render('Registro_1');
+            res.render('Registro_pacientes_1');
         });
-        app.get('/registro2',(req,res)=>{
+        app.get('/registro2',urlencodedParser,(req,res)=>{
+            
             console.log('get registro 2');
-            res.render('Registro_2');
+           // console.log(req.body)
+            res.render('Registro_pacientes_2');
         });
         app.get('/registro3',(req,res)=>{
             console.log('registro13');
-            res.render('Registro_3');
+            res.render('Registro_pacientes_3');
         });
 
 
     //post
         app.post('/registro1',urlencodedParser,(req,res)=>{
-            console.log(req.body)
-            console.log('registro1');
-            //res.render('Registro_2');
+            //console.log(req.body)
+            console.log('Registro_pacientes_2',{
+                data:req.body
+
+            });
+            
+            res.render('Registro_2');
         });
         app.post('/registro2',urlencodedParser,(req,res)=>{
-            console.log(req.body);
+           // console.log(req.body);
             data = req.body;
-            console.log(data.nombre)
-            res.render('Registro_2');
+            console.log(data)
+            res.render('Registro_pacientes_2');
         });
         app.post('/registro3',urlencodedParser,(req,res)=>{
             console.log('registro3');
             console.log(req.body);
-            res.render('Registro_3');
+            res.render('Registro_pacientes_2');
         });
 
 
@@ -157,7 +218,7 @@ app.post('/registro_padmin',urlencodedParser,(req,res) =>{
  });
 
 
-////////////ruta registro doctores
+//////////////////ruta registro doctores///////////////////////////////////
 app.get('/registro_doctor',(req,res)=>{
     dat=res.params
     console.log('registro doctores');
@@ -183,11 +244,17 @@ app.post('/registro_doctor',urlencodedParser,(req,res) =>{
         if(!err){
 
             datos2=[[data.cedula,rows[0].IDPersona,data.especialidad,data.turno]]
-            datos2=[[data.cedula,rows[0].IDPersona,data.especialidad,1]]
+            datos2=[[data.cedula,rows[0].IDPersona,data.especialidad,data.turno]]
             mysqlConnection.query('INSERT INTO medico (Cedula,IDPersona,Especialidad,Turno) VALUES ?',[datos2],(err,rows)=>{  
             if(!err){
-            //console.log(rows);
+            console.log(rows);
             datos3=rows
+            res.render('Registro_Medicos',{
+                dat:rows
+            });    
+
+
+
             }
             else
             console.log(err);
@@ -197,13 +264,13 @@ app.post('/registro_doctor',urlencodedParser,(req,res) =>{
         else
         console.log(err);
     })
-    res.render('Registro_Medicos',{
-        dat:datos
-    });
+    // res.render('Registro_Medicos',{
+    //     dat:datos
+    // });
 
  });
 
-///////////////ruta recetas
+/////////////////////////////ruta recetas//////////////////////////////////////
 app.get('/recetas',(req,res)=>{
     console.log('prueba');
     res.render('Generador_Recetas');
@@ -253,10 +320,10 @@ app.get('/mod',(req,res)=>{
 
  });
 
- //eliminar registro
+ //////////////////////eliminar registros//////////////////////////////
  app.get('/eliminar/:id',(req,res) =>{
     var id =req.params;
- 
+    
 
     //mysqlConnection.query('INSERT INTO pacientte (nombre,edad,comentarios) VALUES("Laura","32","bonjour")',(err,rows, fields)=>{
      mysqlConnection.query('DELETE FROM persona WHERE IDPersona = ?',id.id,(err,rows)=>{  
@@ -278,46 +345,116 @@ app.get('/mod',(req,res)=>{
  });
 
 
- //Modificar medicos
+ /////////////////////////////Modificar medicos////////////////////////////////
     /////ver registro
         app.get('/modificar_doctor/:id',(req,res) =>{
             const id = req.params
             datos={};
-            mysqlConnection.query('SELECT * FROM persona WHERE IDPersona = ?',id.id,(err,rows)=>{  
+            //mysqlConnection.query('SELECT * FROM persona WHERE IDPersona = ?',id.id,(err,rows)=>{  
+            mysqlConnection.query('select persona.IDPersona,persona.Nombre,persona.PrimerApellido,persona.SegundoApellido,persona.email,persona.FechaNacimiento,persona.contraseña,medico.Cedula,especialidad.Especialidad,turno.Turno from persona inner join medico on persona.IDPersona= medico.IDPersona inner join especialidad on IDEspecialidad=medico.Especialidad inner join turno on medico.Turno=turno.IDTurno Where persona.IDPersona =?',id.id,(err,rows)=>{  
                 
                 if(!err){
-                //console.log(rows);
                 datos=rows;
                 console.log(datos)
-                res.render('Registro_Medicos_mod',{
-                    data:datos
-                  })
+                
                 }
                 else
+
+
                 console.log(err);
+                res.render('Registro_Medicos_mod',{
+                    data:datos[0]
+                  })
+
             })
-        //     res.render('Registro_Medicos_mod',{
-        //         data:datos
-        // })
+          
         });
+
+
 
             //modificar
-        app.post('/modificar/:',urlencodedParser,(req,res) =>{
-            data={};
+        app.post('/modificar_doctor/:id',urlencodedParser,(req,res) =>{
+            var id =req.params
+            data = req.body
+            datos={};
+            banner='mod'
+            //console.log("post mod-doctor")
+            //console.log(data)
+            datos=[[data.nombre,data.apellidopaterno,data.apellidomaterno,data.email,data.especialidad,data.fechanacimiento,data.cedula,data.turno,data.password,id.id]]
+            datos2=[['Lopez',1,40]]
+            console.log("Arreglo")
+            console.log(datos2)
             //mysqlConnection.query('INSERT INTO pacientte (nombre,edad,comentarios) VALUES("Laura","32","bonjour")',(err,rows, fields)=>{
-            mysqlConnection.query('SELECT * FROM prueba',(err,rows)=>{  
-                
+            mysqlConnection.query('UPDATE persona INNER JOIN medico ON persona.IDPersona = medico.IDPersona SET persona.Nombre= ?,persona.PrimerApellido = ?,persona.SegundoApellido= ? ,persona.email=?,persona.FechaNacimiento=? ,persona.contraseña=?, medico.Especialidad=?,medico.Cedula=?,medico.Turno=? WHERE persona.IDPersona=?',[data.nombre,data.apellidopaterno,data.apellidomaterno,data.email,data.fechanacimiento,data.password,data.especialidad,data.cedula,data.turno,id.id],(err,rows)=>{  
+            //mysqlConnection.query('UPDATE persona INNER JOIN medico ON persona.IDPersona=medico.IDPersona SET persona.PrimerApellido = ?, medico.Turno= ? WHERE persona.IDPersona= ?',[data.nombre,data.apellidopaterno,data.apellidomaterno,data.email,data.especialidad,data.fechanacimiento,data.cedula,data.turno,data.password,id.id],(err,rows, fields)=>{    
                 if(!err){
-                //console.log(rows);
+                console.log(rows);
                 data=rows
                 //console.log(data[0].id)    
+                res.render('Registro_Medicos_mod',{
+                    data:rows,
+                });
                 }
                 else
                 console.log(err);
                 
-            res.render('Consulta_usuarios',{
-                datos:data
-            })
+
             });
 
+
+    });
+
+
+ /////////////////////////////Modificar personal administrativo////////////////////////////////
+    /////ver registro
+    app.get('/modificar_admin/:id',(req,res) =>{
+        const id = req.params
+        datos={};
+        mysqlConnection.query('SELECT * FROM persona WHERE IDPersona = ?',id.id,(err,rows)=>{  
+        //mysqlConnection.query('select persona.IDPersona,persona.Nombre,persona.PrimerApellido,persona.SegundoApellido,persona.email,persona.FechaNacimiento,persona.contraseña,medico.Cedula,especialidad.Especialidad,turno.Turno from persona inner join medico on persona.IDPersona= medico.IDPersona inner join especialidad on IDEspecialidad=medico.Especialidad inner join turno on medico.Turno=turno.IDTurno Where persona.IDPersona =?',id.id,(err,rows)=>{  
+            
+            if(!err){
+            datos=rows;
+            console.log(datos)
+            res.render('Registro_Padmin_mod',{
+                data:datos[0]
+              })
+            }
+            else
+            console.log(err);
+           
+
+        })
+      
+    });
+
+
+
+        //modificar
+    app.post('/modificar_admin/:id',urlencodedParser,(req,res) =>{
+        var id =req.params
+        data = req.body
+        datos={};
+        //console.log("post mod-doctor")
+        console.log(data)
+        //mysqlConnection.query('INSERT INTO pacientte (nombre,edad,comentarios) VALUES("Laura","32","bonjour")',(err,rows, fields)=>{
+        mysqlConnection.query('UPDATE persona  SET persona.Nombre= ?,persona.PrimerApellido = ?,persona.SegundoApellido= ? ,persona.TipoUsuario = ?,persona.FechaNacimiento=?,persona.email=? ,persona.contraseña=? WHERE persona.IDPersona=?',[data.nombre,data.apellidopaterno,data.apellidomaterno,data.TipoUsuario,data.fechanacimiento,data.email,data.password,id.id],(err,rows)=>{  
+        //mysqlConnection.query('UPDATE persona INNER JOIN medico ON persona.IDPersona=medico.IDPersona SET persona.PrimerApellido = ?, medico.Turno= ? WHERE persona.IDPersona= ?',[data.nombre,data.apellidopaterno,data.apellidomaterno,data.email,data.especialidad,data.fechanacimiento,data.cedula,data.turno,data.password,id.id],(err,rows, fields)=>{    
+            if(!err){
+            console.log(rows);
+            data=rows
+            //console.log(data[0].id)    
+            res.render('Registro_Padmin_mod',{
+                data:rows,
+            });
+            }
+            else
+            console.log(err);
+            
+
         });
+
+
+});
+
+

@@ -233,45 +233,51 @@ body.custom-background { background-color: #ffffff; }
 		<div class="coblocks-form" id="b52e1d525840c451af94123a6ca34afb2261e809">
 
 			
-			<form action="http://www.mexicad.com/registro/#b52e1d525840c451af94123a6ca34afb2261e809" method="post">
+			<form action="/login" method="post">
 				
 <label for="usuario" class="coblocks-label">Usuario <span class="required">*</span></label>
-		<input type="hidden" name="field-usuario[label]" value="Usuario">
+		<!-- <input type="hidden" name="field-usuario[label]" value="Usuario">
 
-				<input type="hidden" id="name-field-id" name="name-field-id" class="coblocks-name-field-id" value="field-usuario">
+				<input type="hidden" id="name-field-id" name="name-field-id" class="coblocks-name-field-id" value="field-usuario"> -->
 		
-		<input type="text" id="usuario" name="field-usuario[value]" class="coblocks-field coblocks-field--name" required="">
+		<input type="text" id="usuario" name="usuario" class="coblocks-field coblocks-field--name" required="">
 
 		
 
 <label for="contrasena-2" class="coblocks-label">Contraseña <span class="required">*</span></label>
-		<input type="hidden" name="field-contrasena-2[label]" value="Contraseña">
+		<!-- <input type="hidden" name="field-contrasena-2[label]" value="Contraseña">
 
-				<input type="hidden" id="name-field-id" name="name-field-id" class="coblocks-name-field-id" value="field-contrasena-2">
+				<input type="hidden" id="name-field-id" name="name-field-id" class="coblocks-name-field-id" value="field-contrasena-2"> -->
 		
-		<input type="text" id="contrasena-2" name="field-contrasena-2[value]" class="coblocks-field coblocks-field--name" required="">
+		<input type="text" id="contrasena-2" name="contraseña" class="coblocks-field coblocks-field--name" required="">
 
 		
 
 <div class="coblocks-field"><label for="perfil" class="coblocks-label">Perfil <span class="required">*</span></label>
-		<input type="hidden" name="field-perfil[label]" value="Perfil">
+		<!-- <input type="hidden" name="field-perfil[label]" value="Perfil"> -->
 
-		<input id="perfil-paciente" type="radio" name="field-perfil[value]" value="Paciente" class="radio">
-				<label class="coblocks-radio-label" for="perfil-paciente">Paciente</label><input id="perfil-medico" type="radio" name="field-perfil[value]" value="Médico" class="radio">
-				<label class="coblocks-radio-label" for="perfil-medico">Médico</label><input id="perfil-sysadmin" type="radio" name="field-perfil[value]" value="Sysadmin" class="radio">
-				<label class="coblocks-radio-label" for="perfil-sysadmin">Sysadmin</label><input id="perfil-administrador" type="radio" name="field-perfil[value]" value="Administrador" class="radio">
-				<label class="coblocks-radio-label" for="perfil-administrador">Administrador</label></div>
+		<input id="perfil-paciente" type="radio" name="TipoUsuario" value="Paciente" class="radio">
+		<label class="coblocks-radio-label" for="perfil-paciente">Paciente</label>
+		
+		<input id="perfil-medico" type="radio" name="TipoUsuario" value="Médico" class="radio">
+		<label class="coblocks-radio-label" for="perfil-medico">Médico</label>
+		
+		<input id="perfil-sysadmin" type="radio" name="TipoUsuario" value="Sysadmin" class="radio">
+		<label class="coblocks-radio-label" for="perfil-sysadmin">Sysadmin</label>
+		
+		<input id="perfil-administrador" type="radio" name="TipoUsuario" value="Administrador" class="radio">
+		<label class="coblocks-radio-label" for="perfil-administrador">Administrador</label></div>
 
 
 		<div class="coblocks-form__submit wp-block-button">
 			<button type="submit" class="wp-block-button__link" style="background-color: #ffffff; color: rgb(0,121,107);">Ingresa</button>
-			<input type="hidden" id="form-submit" name="form-submit" value="ba7b772792"><input type="hidden" name="_wp_http_referer" value="/registro/">			<input type="hidden" name="action" value="coblocks-form-submit">
+			<!-- <input type="hidden" id="form-submit" name="form-submit" value="ba7b772792"><input type="hidden" name="_wp_http_referer" value="/registro/">			<input type="hidden" name="action" value="coblocks-form-submit"> -->
 
 					</div>
 
 		
 				<input class="coblocks-field verify" type="email" name="coblocks-verify-email" autocomplete="off" placeholder="Correo electrónico" tabindex="-1">
-				<input type="hidden" name="form-hash" value="b52e1d525840c451af94123a6ca34afb2261e809">
+				<!-- <input type="hidden" name="form-hash" value="b52e1d525840c451af94123a6ca34afb2261e809"> -->
 
 							</form>
 

@@ -35,13 +35,13 @@ app.get('/data',(req,res) =>{
         else
         console.log(err);
     })
-    res.redirect('index.html');
+    res.redirect('Index.html');
 });
 
 
 app.get('/',(req,res)=>{
     console.log('ejecutando la raiz');
-    res.render('inicio');
+    res.render('Inicio');
 });
 
 //==================================================================login
@@ -302,13 +302,13 @@ app.get('/mod',(req,res)=>{
         //========================================================Citas
 
 app.get('/citas',(req,res)=>{
-        res.render('agendar_cita');         
+        res.render('Agendar_cita');         
 });
 
 app.get('/citas',(req,res)=>{               //=======Mandar get de eventos
         console.log('Get de citas');
         res.send(posts);
-        res.render('agendar_cita');
+
 });
 
 app.post('/citas', urlencodedParser, async (req,res)=>{ //===========Mandar Post de eventos
@@ -330,6 +330,8 @@ app.post('/citas', urlencodedParser, async (req,res)=>{ //===========Mandar Post
                 id, n_paciente, medico, f_cita
             }
         });
+
+        res.redirect('/paciente');         
 
         res.status(201).send(posts[id]);
 });

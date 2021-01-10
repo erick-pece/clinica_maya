@@ -3,6 +3,7 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const path= require('path');
 const { Console } = require("console");
+const { ENGINE_METHOD_NONE } = require("constants");
 const router =express.Router();
 
 const app = express();
@@ -20,13 +21,11 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.set('view engine', 'ejs');
 //app.set('port', process.env.port || 3000);
 var port = process.env.PORT || 3000;
-const posts = {};
 
  var mysqlConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    //password: 'zimbarawr1466',
-    password: 'admin',
+    password: 'zimbarawr1466',
     database: 'clinica_maya',
     port: 3306
  });
@@ -45,7 +44,6 @@ const posts = {};
 
 
 
-<<<<<<< HEAD
 ////////////////login///////////////////////////////////
 app.get('/login',(req,res)=>{
     console.log('login');
@@ -58,40 +56,36 @@ app.post('/login',urlencodedParser,(req,res)=>{
    datos=req.body
    console.log(datos.usuario,datos.contraseña);
     mysqlConnection.query('SELECT * FROM persona WHERE email= ? AND contraseña=?',[datos.usuario,datos.contraseña],(err,rows)=>{  
-=======
-app.get('/dat',(req,res) =>{
-    mysqlConnection.query('SELECT * FROM pacientte',(err,rows, fields)=>{
->>>>>>> 367a74772454fdae0b920b3367f5b84fd1c57a77
         if(!err){
             console.log("mysql rows")
             console.log(rows); 
             if(rows[0].TipoUsuario=='paciente'){
-                    res.render('paciente',{
-                        datos:rows[0]
+                    res.render('Pacientes_(Modificado)',{
+                        data:rows[0]
                     });
                     console.log("paciente")
                 }
             else if(rows[0].TipoUsuario=='doctor'){
-                    res.render('Personal_Medico',{
-                        datos:rows[0]
+                    res.render('Bienvenido_Doc_(Modificado)',{
+                        data:rows[0]
                     });
                     console.log("doctor")
                 }
             else if(rows[0].TipoUsuario=="SysAdmin"){
                     res.render('Sysadmin',{
-                        datos:rows[0]
+                        data:rows[0]
                     });
                     console.log("Sys")
                 }
             else if(rows[0].TipoUsuario=="Administrativo"){
                     res.render('Bienvenido_Adm',{
-                        datos:rows[0]
+                        data:rows[0]
                     });
                     console.log("Adm")
                 }
              else{
                     res.render('Acceder',{
-                        datos:datos
+                        data:datos
                     });
                     console.log("otro")
                 }    
@@ -103,30 +97,46 @@ app.get('/dat',(req,res) =>{
 
 });
 
-<<<<<<< HEAD
 
 
-//////////////////////////////////////////////
-
-=======
-  app.get('/',(req,res)=>{
-      console.log('ejecutando la raiz');
-      //res.render('index');
-      res.render('inicio');
-
-  });
-//login
-app.get('/login',(req,res)=>{
-    console.log('login');
-    res.render('Acceder');
+/////////////////busqueda de pacientes////////////////
+app.get('/search',(req,res)=>{
+    console.log('busqueda');
+    res.render('Busqueda_pacientes');
 });
->>>>>>> 367a74772454fdae0b920b3367f5b84fd1c57a77
 
-//ruta inicio
+app.post('/search',urlencodedParser,(req,res)=>{
+    
+    nombre=req.body;
+    //console.log(nombre);
+    var campos=nombre.busqueda.split(" ");
+    mysqlConnection.query('SELECT * FROM persona WHERE Nombre = ? AND  PrimerApellido = ?  AND  SegundoApellido = ? AND TipoUsuario = "paciente"' ,[campos[0],campos[1],campos[2]] ,(err,rows)=>{ 
+        if(!err){
+        //console.log(rows);
+        res.render('Consulta_expediente',{
+            data:rows[0]
+        })
+        }
+        else{
+        console.log(err);
+
+        }
+    
+    })
+
+});
+
+/////////ruta inicio//////////////////
 app.get('/inicio',(req,res)=>{
     console.log('inicio');
     res.render('Inicio');
 });
+
+
+
+
+
+
 
 /////////////agendar cita///////
 
@@ -147,20 +157,52 @@ console.log(data)
     // console.log(err);
     // })
 })
-//rutas pantallas de usuarios
+/////////////////////rutas pantallas de usuarios
  app.get('/admin',(req,res)=>{
     console.log('admin');
-    res.render('Bienvenido_Adm');
+    //res.render('Bienvenido_Adm');
+    res.render('Bienvenido_Adm_(Modificado)');
+    
 });
+// //////////////////
+// app.get('/paciente',urlencodedParser,(req,res)=>{
 
-app.get('/paciente',(req,res)=>{
+//     console.log('paciente');
+//     res.render('Pacientes_(Modificado)',{
+//         data:req.body
+//     });
+// });
+
+app.get('/paciente/:id',urlencodedParser,(req,res)=>{
+    id=req.params
     console.log('paciente');
-    res.render('Pacientes');
+    mysqlConnection.query('SELECT * FROM persona WHERE IDPersona =?',[id.id],(err,rows)=>{
+        if(!err){
+            console.log(rows[0])
+            res.render('Pacientes_(Modificado)',{
+                data:rows[0]
+            });
+
+        }
+        else{
+            console.log(err)
+        }
+    
+    })
+
+
+    res.render('Pacientes_(Modificado)',{
+        data:req.body
+    });
 });
+////////////////////
+
 
 app.get('/doctor',(req,res)=>{
     console.log('doctor');
-    res.render('Personal_Medico');
+    res.render('Bienvenido_Doc_(Modificado)',{
+        datos:{}
+    });
 });
 app.get('/sysadmin',(req,res)=>{
     console.log('prueba');
@@ -180,7 +222,7 @@ app.get('/sysadmin',(req,res)=>{
            // console.log(req.body)
             res.render('Registro_pacientes_2');
         });
-        app.get('/registro3',(req,res)=>{
+        app.get('/registro3',urlencodedParser,(req,res)=>{
             console.log('registro13');
             res.render('Registro_pacientes_3');
         });
@@ -293,9 +335,65 @@ app.post('/registro_doctor',urlencodedParser,(req,res) =>{
 
 /////////////////////////////ruta recetas//////////////////////////////////////
 app.get('/recetas',(req,res)=>{
-    console.log('prueba');
-    res.render('Generador_Recetas');
+    console.log('recetas');
+    res.render('Generador_de_Recetas');
 });
+
+///////////////consulta de expediente///////////
+
+app.get('/expediente',urlencodedParser,(req,res)=>{
+    
+    data =req.body;
+    console.log('expediente');
+    console.log(data)
+    mysqlConnection.query('SELECT * FROM persona WHERE Nombre = ? AND  PrimerApellido = ?  AND  SegundoApellido = ?',[data.nombre,data.apellidopaterno,data.apellidomaterno] ,(err,rows)=>{ 
+        if(!err){
+        console.log(rows);
+        const datosPaciente={
+            datos:rows[0],
+            tipo:'doctor'
+
+        }
+        res.render("Consulta_expediente",{
+            data:rows[0]
+        })
+        }
+        else{
+        console.log(err);
+        }
+    })
+});
+
+app.get('/:id',urlencodedParser,(req,res)=>{
+    id =req.params
+    //data =req.body;
+    console.log('expediente');
+    //console.log(data)
+    mysqlConnection.query('SELECT * FROM persona WHERE IDPersona = ?',[id.id] ,(err,rows)=>{ 
+        if(!err){
+        console.log(rows);
+        // const datosPaciente=[[rows[0]],['paciente']]
+        const datosPaciente={
+            datos:rows[0],
+            tipo:'paciente'
+
+        }
+        console.log('Paciente id');
+        console.log(datosPaciente)
+        res.render("Consulta_expediente",{
+            //data:rows[0]
+            data:datosPaciente
+        })
+        }
+        else{
+        console.log(err);
+        }
+    })
+});
+
+
+
+
 
 //consulta de usuarios
 

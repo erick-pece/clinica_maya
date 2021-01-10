@@ -15,8 +15,8 @@ app.post('/events',(req,res)=>{
         const event = req.body;
 
         //axios.post('http://localhost:3000/events', event);
-        axios.post('http://localhost:3001/events', event);
-        axios.post('http://localhost:3002/events', event);
+        axios.post('http://localhost:3001/events', event);	//Front
+        axios.post('http://localhost:3002/events', event);	//Citas
 
 
         res.send({ status: 'OK' });

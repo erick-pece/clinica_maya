@@ -1,4 +1,4 @@
-//const mysql = require("mysql2");
+const mysql = require("mysql2");
 const express = require('express');
 const bodyparser = require("body-parser");
 const path= require('path');
@@ -22,13 +22,11 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.set('view engine', 'ejs');
 var port = process.env.PORT || 3002;
 
-
-/*var mysqlConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    //password: 'zimbarawr1466',
-    password: 'admin',
-    database: 'clinica_maya',
+var mysqlConnection = mysql.createConnection({
+    host: "104.155.165.28",
+    user: "root",
+    password: "prueba123",
+    database: "prueba_erick",
     port: 3306
  });
 
@@ -37,9 +35,9 @@ var port = process.env.PORT || 3002;
         console.log("DB Connected");
     else
         console.log("DB Connection failed \n Error :"+ JSON.stringify(err,undefined,2));
- });*/
-//=====================================================Citas
-/*app.get('/citas',(req,res)=>{   //==========Mandar Get eventos
+ });
+
+app.get('/citas',(req,res)=>{   //==========Mandar Get eventos
         console.log('get citas');
         res.send(posts);         
 });
@@ -55,25 +53,21 @@ app.post('/citas', async (req,res)=>{   //===================Mandar posts evento
             id, n_paciente, medico, f_cita
         };
 
-        await axios.post('http://localhost:3005/events', {
+        await axios.post('http://s-bus:3005/events', {
             type: 'QueryResult',
             data: {
                 id, n_paciente, medico, f_cita
             }
         });
+});
 
-        res.status(201).send(posts[id]);
-});*/
 
 app.post('/events',(req,res)=>{ //==============================Recibir eventos
     console.log('Se recibió el evento:', req.body.type);
     console.log('Se recibieron los datos:', req.body);
-    res.send({});         
+    res.send({});             
 });
 
 app.listen(port, () => {
     console.log(port);
 });
-
-
-

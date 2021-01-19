@@ -7,16 +7,12 @@ app.use(bodyparser.json());
 
 var port = process.env.PORT || 3005;
 
-
-
-
 app.post('/events',(req,res)=>{
         console.log('Se ha enviado un evento');
         const event = req.body;
 
-        //axios.post('http://localhost:3000/events', event);
-        axios.post('http://localhost:3001/events', event);	//Front
-        axios.post('http://localhost:3002/events', event);	//Citas
+        axios.post('http://s-front:3001/events', event);	//Front
+        axios.post('http://s-citas:3002/events', event);	//Citas
 
 
         res.send({ status: 'OK' });

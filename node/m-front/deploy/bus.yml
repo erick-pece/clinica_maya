@@ -1,0 +1,49 @@
+##################################################################################################
+# Microservicio bus de eventos
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: bus
+  labels:
+    app: bus
+    service: bus
+spec:
+  ports:
+  - port: 3005
+    name: http
+  selector:
+    app: bus
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: clinica-bus
+  labels:
+    account: bus
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bus-v1
+  labels:
+    app: bus
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bus
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: bus
+        version: v1
+    spec:
+      serviceAccountName: clinica-bus
+      containers:
+      - name: bus
+        image: gcr.io/mario-214921/e-bus_v2
+        ports:
+        - containerPort: 3005

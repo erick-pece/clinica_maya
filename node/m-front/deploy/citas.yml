@@ -1,0 +1,49 @@
+##################################################################################################
+# Microservicio de citas
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: citas
+  labels:
+    app: citas
+    service: citas
+spec:
+  ports:
+  - port: 3002
+    name: http
+  selector:
+    app: citas
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: clinica-citas
+  labels:
+    account: citas
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: citas-v1
+  labels:
+    app: citas
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: citas
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: citas
+        version: v1
+    spec:
+      serviceAccountName: clinica-citas
+      containers:
+      - name: citas
+        image: gcr.io/mario-214921/citas_v2
+        ports:
+        - containerPort: 3002

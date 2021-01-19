@@ -1,3 +1,4 @@
+const mysql = require("mysql2");
 const express = require("express");
 const bodyparser = require("body-parser");
 const path= require('path');
@@ -24,6 +25,22 @@ app.use(cors());
 //app.set('port', process.env.port || 3000);
 var port = process.env.PORT || 3001;
 const posts = {};
+
+var mysqlConnection = mysql.createConnection({
+    host: "104.155.165.28",
+    user: "root",
+    password: "prueba123",
+    database: "prueba_erick",
+    port: 3306
+ });
+
+ mysqlConnection.connect((err) =>{
+    if(!err)
+        console.log("DB Connected");
+    else
+        console.log("DB Connection failed \n Error :"+ JSON.stringify(err,undefined,2));
+ });
+
 
 
 app.get('/data',(req,res) =>{
@@ -308,15 +325,12 @@ app.get('/citas',(req,res)=>{
 app.get('/citas',(req,res)=>{               //=======Mandar get de eventos
         console.log('Get de citas');
         res.send(posts);
-
 });
 
 app.post('/citas', urlencodedParser, async (req,res)=>{ //===========Mandar Post de eventos
         console.log('Enviando eventos...');
-        //const data =req.body;
-        //console.log(data);
         const id = randomBytes(4).toString('hex');
-        const { n_paciente } = req.body; //data.n_paciente
+        const { n_paciente } = req.body;
         const { medico } = req.body;
         const { f_cita } = req.body;
 
@@ -324,22 +338,21 @@ app.post('/citas', urlencodedParser, async (req,res)=>{ //===========Mandar Post
             id, n_paciente, medico, f_cita
         };
 
-        await axios.post('http://localhost:3005/events', {
+        await axios.post('http://s-bus:3005/events', {
             type: 'DatosCita',
             data: {
                 id, n_paciente, medico, f_cita
             }
         });
 
-        res.redirect('/paciente');         
-
-        res.status(201).send(posts[id]);
+        res.redirect('/paciente');       
 });
 
-/*app.post('/events',(req,res)=>{                     //===========Recibir eventos
-    console.log('Se recivieron los eventos', req.body.type);
-    res.send({});         
-});*/
+app.post('/events',(req,res)=>{ //==============================Recibir eventos
+    console.log('Se recibió el evento:', req.body.type);
+    res.send({});             
+});
+
 
 app.listen(port, () => {
     console.log(port);

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-bus
+  labels:
+    app: e-bus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-bus
+  template:
+    metadata:
+      labels:
+        app: e-bus
+    spec:
+      containers:
+      - name: e-bus
+        image: gcr.io/mario-214921/e-bus_v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3005
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s-bus
+spec:
+  type: ClusterIP
+  selector:
+    app: e-bus
+  ports:
+    - name: e-bus
+      protocol: TCP
+      port: 3005
+      targetPort: 3005
+      

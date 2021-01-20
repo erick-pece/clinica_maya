@@ -226,17 +226,24 @@ body.custom-background { background-color: #ffffff; }
 	<div class="content-area__wrapper">
 		<div class="content-area entry-content">
 			
-<p class="has-text-align-center has-primary-color has-text-color has-small-font-size has-custom-font has-custom-weight has-custom-transform" style="font-family:Arial;font-weight:normal;text-transform:capitalize;font-size:32px"><strong>¡Bienvenid@ “Doctor X”!</strong></p>
+<p class="has-text-align-center has-primary-color has-text-color has-small-font-size has-custom-font has-custom-weight has-custom-transform" style="font-family:Arial;font-weight:normal;text-transform:capitalize;font-size:32px">
+	<strong>¡Bienvenid@ Doctor/a 
+	<% if (datos) { %>
+		<%=datos.Nombre %> 
+	<% } %>
+		
+	
+	</strong></p>
 
 
 
 <div class="wp-block-group alignfull"><div class="wp-block-group__inner-container">
 <div class="wp-block-buttons aligncenter">
-<div class="wp-block-button is-style-fill"><a class="wp-block-button__link has-primary-color has-quaternary-background-color has-text-color has-background">Subir receta</a></div>
+<div class="wp-block-button is-style-fill"><a class="wp-block-button__link has-primary-color has-quaternary-background-color has-text-color has-background" href="/recetas">Subir receta</a></div>
 
 
 
-<div class="wp-block-button is-style-fill"><a class="wp-block-button__link has-primary-color has-quaternary-background-color has-text-color has-background">Consultar expediente</a></div>
+<div class="wp-block-button is-style-fill"><a class="wp-block-button__link has-primary-color has-quaternary-background-color has-text-color has-background" href="/search">Consultar expediente</a></div>
 </div>
 
 
@@ -312,7 +319,7 @@ body.custom-background { background-color: #ffffff; }
 
 
 <div class="wp-block-buttons aligncenter">
-<div class="wp-block-button is-style-outline"><a class="wp-block-button__link">Regresar al inicio</a></div>
+<div class="wp-block-button is-style-outline"><a class="wp-block-button__link" href="/inicio">Regresar al inicio</a></div>
 </div>
 
 

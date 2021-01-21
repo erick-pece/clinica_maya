@@ -37,9 +37,10 @@ var port = process.env.PORT || 3002;
         console.log("DB Connected");
     else
         console.log("DB Connection failed \n Error :"+ JSON.stringify(err,undefined,2));
- });*/
+ });
+ */
 //=====================================================Citas
-/*app.get('/citas',(req,res)=>{   //==========Mandar Get eventos
+app.get('/citas',(req,res)=>{   //==========Mandar Get eventos
         console.log('get citas');
         res.send(posts);         
 });
@@ -61,9 +62,7 @@ app.post('/citas', async (req,res)=>{   //===================Mandar posts evento
                 id, n_paciente, medico, f_cita
             }
         });
-
-        res.status(201).send(posts[id]);
-});*/
+});
 
 app.post('/events',(req,res)=>{ //==============================Recibir eventos
     console.log('Se recibió el evento:', req.body.type);

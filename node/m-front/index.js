@@ -308,13 +308,9 @@ app.get('/citas',(req,res)=>{
 app.get('/citas',(req,res)=>{               //=======Mandar get de eventos
         console.log('Get de citas');
         res.send(posts);
-
 });
-
 app.post('/citas', urlencodedParser, async (req,res)=>{ //===========Mandar Post de eventos
         console.log('Enviando eventos...');
-        //const data =req.body;
-        //console.log(data);
         const id = randomBytes(4).toString('hex');
         const { n_paciente } = req.body; //data.n_paciente
         const { medico } = req.body;
@@ -331,15 +327,13 @@ app.post('/citas', urlencodedParser, async (req,res)=>{ //===========Mandar Post
             }
         });
 
-        res.redirect('/paciente');         
-
-        res.status(201).send(posts[id]);
+        res.redirect('/paciente');
 });
 
-/*app.post('/events',(req,res)=>{                     //===========Recibir eventos
-    console.log('Se recivieron los eventos', req.body.type);
+app.post('/events',(req,res)=>{                     //===========Recibir eventos
+    console.log('Se recibieron los eventos', req.body.type);
     res.send({});         
-});*/
+});
 
 app.listen(port, () => {
     console.log(port);

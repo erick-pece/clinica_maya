@@ -1,3 +1,4 @@
+//const mysql = require("mysql2");
 const express = require("express");
 const bodyparser = require("body-parser");
 const path= require('path');
@@ -25,6 +26,22 @@ app.use(cors());
 var port = process.env.PORT || 3001;
 const posts = {};
 
+/*var mysqlConnection = mysql.createConnection({
+    host: "104.155.165.28",
+    user: "root",
+    password: "prueba123",
+    database: "prueba_erick",
+    port: 3306
+ });
+
+ mysqlConnection.connect((err) =>{
+    if(!err)
+        console.log("DB Connected");
+    else
+        console.log("DB Connection failed \n Error :"+ JSON.stringify(err,undefined,2));
+ });
+
+*/
 
 app.get('/data',(req,res) =>{
     mysqlConnection.query('SELECT * FROM pacientte',(err,rows, fields)=>{
@@ -104,34 +121,6 @@ app.get('/sysadmin',(req,res)=>{
             console.log(req.body);
             res.render('Registro_3');
         });
-
-
-//////////////ruta registro personal administrativo
-app.get('/registro_padmin',urlencodedParser,(req,res)=>{
-    console.log('registro administrativos');
-    dat=res.params
-    //console.log(dat)
-    res.render('Registro_Personal_Administrativo');
-});
-
-app.post('/registro_padmin',urlencodedParser,(req,res) =>{
-    datos2=[]
-    const data =req.body;
-    console.log(req.body);
-    let datos=[[data.nombre,data.apellidopaterno,data.apellidomaterno,data.TipoUsuario,data.fechanacimiento,0,'Soltero','55778899',data.email,data.password]]
-    //console.log(datos)
-    mysqlConnection.query('INSERT INTO persona (Nombre,PrimerApellido,SegundoApellido,TipoUsuario,FechaNacimiento,Sexo,EstadoCivil,Celular,email,contraseña) VALUES ?',[datos],(err,rows)=>{  
-       if(!err){
-        //console.log(rows);
-        datos2=rows
-       }
-       else
-       console.log(err);
-    })
-
-    res.render('Registro_Personal_Administrativo',{dat:datos2});
-
- });
 
 
 ////////////ruta registro doctores
@@ -312,7 +301,7 @@ app.get('/citas',(req,res)=>{               //=======Mandar get de eventos
 app.post('/citas', urlencodedParser, async (req,res)=>{ //===========Mandar Post de eventos
         console.log('Enviando eventos...');
         const id = randomBytes(4).toString('hex');
-        const { n_paciente } = req.body; //data.n_paciente
+        const { n_paciente } = req.body;
         const { medico } = req.body;
         const { f_cita } = req.body;
 
@@ -334,6 +323,58 @@ app.post('/events',(req,res)=>{                     //===========Recibir eventos
     console.log('Se recibieron los eventos', req.body.type);
     res.send({});         
 });
+
+
+//============================================================Registro personal administrativo========================================
+
+app.get('/registro_padmin',(req,res)=>{     //==============Render
+    console.log('registro administrativos');
+    res.render('Registro_Personal_Administrativo');
+});
+
+app.get('/registros',(req,res)=>{               //=======Mandar get de eventos
+        console.log('Si mando algo');
+        res.send(posts);
+});
+app.post('/registros', urlencodedParser, async (req,res)=>{ //===========Mandar Post de eventos
+        console.log('Enviando eventos registros...');
+        const id = randomBytes(4).toString('hex');
+        const data = req.body;
+        console.log(req.body);
+          let datos = [[
+              data.nombre,
+              data.apellidopaterno,
+              data.apellidomaterno,
+              data.TipoUsuario,
+              data.fechanacimiento,
+              0,
+              "Soltero",
+              "55778899",
+              data.email,
+              data.password,
+              ],
+          ];        
+
+        posts[id] = {
+            id, datos
+        };
+
+        await axios.post('http://localhost:3005/events', {
+            type: 'DatosRegistro',
+            data: {
+                id, datos
+            }
+        });
+
+        res.redirect('/paciente');
+});
+
+app.post('/events',(req,res)=>{                     //===========Recibir eventos
+    console.log('Se recibieron los eventos', req.body.type);
+    res.send({});         
+});
+
+
 
 app.listen(port, () => {
     console.log(port);

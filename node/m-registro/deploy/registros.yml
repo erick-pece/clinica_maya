@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registros
+  labels:
+    app: registros
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registros
+  template:
+    metadata:
+      labels:
+        app: registros
+    spec:
+      containers:
+      - name: registros
+        image: gcr.io/mario-214921/registros_v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s-registros
+spec:
+  type: ClusterIP
+  selector:
+    app: registros
+  ports:
+    - name: registros
+      protocol: TCP
+      port: 3003
+      targetPort: 3003
